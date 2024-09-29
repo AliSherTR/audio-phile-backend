@@ -1,15 +1,11 @@
-import express, { Request, Response } from "express";
-import { db } from "./db";
+import express from "express";
 
+import productRouter from "./Routes/productRoutes";
 const app = express();
 
 const port: number = 3000;
 
-app.get("/", async (req: Request, res: Response) => {
-    const products = await db.product.findMany();
-    console.log(products);
-    res.status(200).json(products);
-});
+app.use(productRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
