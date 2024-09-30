@@ -1,0 +1,21 @@
+meta {
+  name: Create a product
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Mobile Phone",
+    "price": 39999,
+    "description": "test",
+    "accessories": ["test1" , "test2"],
+    "features" : "test"
+  }
+}

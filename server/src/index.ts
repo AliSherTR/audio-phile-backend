@@ -6,6 +6,8 @@ const app = express();
 
 const port: number = 3000;
 
+app.use(express.json());
+
 app.use(productRouter);
 
 app.use(globalErrorHandler);
