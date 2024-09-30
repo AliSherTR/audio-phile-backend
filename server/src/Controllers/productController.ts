@@ -1,8 +1,16 @@
+import { NextFunction, Request, Response } from "express";
 import { db } from "../db";
+import { catchAsync } from "../utils/errorHandler";
 
-import { Request, Response } from "express";
+export const getAllProducts = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const products = await db.product.findMany();
 
-export const getAllProducts = async (req: Request, res: Response) => {
-    const products = await db.product.findMany();
-    res.status(200).json(products);
-};
+        if (products.length === 0) return next(new Error("No Products Found"));
+
+        res.status(200).json({
+            status: "success",
+            data: products,
+        });
+    }
+);
