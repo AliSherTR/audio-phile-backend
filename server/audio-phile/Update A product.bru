@@ -1,18 +1,22 @@
 meta {
-  name: Create a product
+  name: Update A product
   type: http
-  seq: 3
+  seq: 6
 }
 
-post {
-  url: http://localhost:3000/
+patch {
+  url: http://localhost:3000/:id
   body: json
   auth: none
 }
 
+params:path {
+  id: 2
+}
+
 body:json {
   {
-    "name": "Mobile Phone",
+    "name": "HEAD PHONE",
     "price": 39999,
     "description": "test",
     "accessories": ["test1" , "test2"],

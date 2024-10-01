@@ -7,7 +7,11 @@ export const ProductSchema = z.object({
     price: z.number().min(1, {
         message: "Price is required",
     }),
-    description: z.string(),
+    description: z.string().min(1, {
+        message: "description is required",
+    }),
     accessories: z.array(z.string()),
-    features: z.string(),
+    features: z.string().min(1, {
+        message: "features are required",
+    }),
 });

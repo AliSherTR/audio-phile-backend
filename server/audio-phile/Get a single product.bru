@@ -1,0 +1,15 @@
+meta {
+  name: Get a single product
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:3000/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: 1
+}
