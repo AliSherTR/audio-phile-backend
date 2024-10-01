@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { db } from "../db";
 import { catchAsync } from "../utils/errorHandler";
 import createHttpError from "http-errors";
+import { z } from "zod";
+import { ProductSchema } from "../Models/ProductModel";
 
 export const getAllProducts = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -19,21 +21,17 @@ export const getAllProducts = catchAsync(
 
 export const createProduct = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { name, price, description, accessories, features } = req.body;
+        const validateFields = ProductSchema.safeParse(req.body);
+        if (!validateFields.success)
+            return next(createHttpError(406, "Invalid Data sent to server"));
+        const validData = validateFields.data;
         const newProduct = await db.product.create({
-            data: {
-                name,
-                price,
-                description: description,
-                accessories: accessories,
-                features: features,
-            },
+            data: validData,
         });
-        // Send response
         res.status(201).json({
             status: "success",
             data: {
-                product: req.body,
+                product: newProduct,
             },
         });
     }
