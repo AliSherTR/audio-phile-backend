@@ -4,6 +4,7 @@ import {
     deleteProduct,
     getAllProducts,
     getFeaturedProducts,
+    getPromotedProduct,
     getSingleProduct,
     updateProduct,
 } from "../Controllers/productController";
@@ -13,6 +14,7 @@ import { ProductSchema } from "../Models/ProductModel";
 const router = Router();
 
 router.route("/featured").get(getFeaturedProducts);
+router.get("/promoted", getPromotedProduct);
 router
     .route("/")
     .get(getAllProducts)

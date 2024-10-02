@@ -141,17 +141,34 @@ export const updateProduct = catchAsync(
 
 export const getFeaturedProducts = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const products = await db.product.findMany({
+        const featuredProducts = await db.product.findMany({
             where: {
                 isFeatured: true,
             },
         });
-        if (!products.length)
+        if (!featuredProducts.length)
             return next(createHttpError(404, "no products found"));
 
         res.status(200).json({
             status: "success",
-            data: products,
+            data: featuredProducts,
+        });
+    }
+);
+
+export const getPromotedProduct = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const promotedProduct = await db.product.findFirst({
+            where: {
+                isPromoted: true,
+            },
+        });
+        if (!promotedProduct)
+            return next(createHttpError(404, "No Product found"));
+
+        res.status(200).json({
+            status: "success",
+            data: promotedProduct,
         });
     }
 );
