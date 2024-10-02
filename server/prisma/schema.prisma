@@ -18,8 +18,6 @@ enum Category {
   SPEAKERS
   EARPHONES
 }
-
-
 model Product {
   id              Int @id @default(autoincrement())
   name            String @unique
@@ -30,4 +28,5 @@ model Product {
   isFeatured      Boolean
   image           String
   features        String
+  isPromoted      Boolean @default(false)
 }

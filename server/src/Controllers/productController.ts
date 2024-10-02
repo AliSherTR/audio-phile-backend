@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import createHttpError from "http-errors";
 import { db } from "../db";
 import { catchAsync } from "../utils/errorHandler";
-import createHttpError from "http-errors";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export const getAllProducts = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -20,15 +20,27 @@ export const getAllProducts = catchAsync(
 export const createProduct = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const productData = req.body;
-        const newProduct = await db.product.create({
-            data: productData,
-        });
-        res.status(201).json({
-            status: "success",
-            data: {
-                product: newProduct,
-            },
-        });
+        try {
+            const newProduct = await db.product.create({
+                data: productData,
+            });
+            res.status(201).json({
+                status: "success",
+                data: {
+                    product: newProduct,
+                },
+            });
+        } catch (error) {
+            if (
+                error instanceof PrismaClientKnownRequestError &&
+                error.code === "P2002" // This is Prisma's code for "Record already exists"
+            ) {
+                return next(
+                    createHttpError(404, "This product already exists")
+                );
+            }
+            next(error);
+        }
     }
 );
 
@@ -40,7 +52,7 @@ export const getSingleProduct = catchAsync(
 
         const productId = parseInt(id);
 
-        const product = await db.product.findUnique({
+        const product = await db.product.findFirst({
             where: {
                 id: productId,
             },
@@ -107,6 +119,7 @@ export const updateProduct = catchAsync(
                     image: req.body.image,
                     isFeatured: req.body.isFeatured,
                     category: req.body.category.toUpperCase(),
+                    isPromoted: req.body.isPromoted,
                 },
             });
             res.status(200).json({
@@ -123,5 +136,22 @@ export const updateProduct = catchAsync(
             }
             next(error);
         }
+    }
+);
+
+export const getFeaturedProducts = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const products = await db.product.findMany({
+            where: {
+                isFeatured: true,
+            },
+        });
+        if (!products.length)
+            return next(createHttpError(404, "no products found"));
+
+        res.status(200).json({
+            status: "success",
+            data: products,
+        });
     }
 );

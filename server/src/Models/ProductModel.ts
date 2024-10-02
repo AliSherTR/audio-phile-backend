@@ -17,4 +17,5 @@ export const ProductSchema = z.object({
         message: "features are required",
     }),
     isFeatured: z.boolean(),
+    isPromoted: z.boolean().default(false),
 });
