@@ -104,6 +104,9 @@ export const updateProduct = catchAsync(
                     description: req.body.description,
                     accessories: req.body.accessories,
                     features: req.body.features,
+                    image: req.body.image,
+                    isFeatured: req.body.isFeatured,
+                    category: req.body.category.toUpperCase(),
                 },
             });
             res.status(200).json({

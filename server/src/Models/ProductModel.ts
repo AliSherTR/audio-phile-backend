@@ -11,7 +11,10 @@ export const ProductSchema = z.object({
         message: "description is required",
     }),
     accessories: z.array(z.string()),
+    category: z.enum(["HEADPHONES", "EARPHONES", "SPEAKERS"]),
+    image: z.string(),
     features: z.string().min(1, {
         message: "features are required",
     }),
+    isFeatured: z.boolean(),
 });

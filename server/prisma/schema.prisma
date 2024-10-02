@@ -13,12 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Category {
+  HEADPHONES
+  SPEAKERS
+  EARPHONES
+}
+
 
 model Product {
   id              Int @id @default(autoincrement())
-  name            String
+  name            String @unique
   price           Float
   description     String
   accessories     String[]
+  category        Category
+  isFeatured      Boolean
+  image           String
   features        String
 }
