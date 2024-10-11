@@ -10,6 +10,7 @@ import {
 } from "../Controllers/productController";
 import { validateData } from "../Middleware/validationMiddleware";
 import { ProductSchema } from "../Models/ProductModel";
+import { verifyAdminToken } from "../Middleware/verifyAdmin";
 
 const router = Router();
 
@@ -18,12 +19,12 @@ router.get("/promoted", getPromotedProduct);
 router
     .route("/")
     .get(getAllProducts)
-    .post(validateData(ProductSchema), createProduct);
+    .post(verifyAdminToken, validateData(ProductSchema), createProduct);
 
 router
     .route("/:id")
     .get(getSingleProduct)
-    .delete(deleteProduct)
-    .patch(validateData(ProductSchema), updateProduct);
+    .delete(verifyAdminToken, deleteProduct)
+    .patch(validateData(ProductSchema), verifyAdminToken, updateProduct);
 
 export default router;

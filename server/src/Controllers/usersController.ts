@@ -4,6 +4,11 @@ import bcrypt from "bcryptjs";
 import { catchAsync } from "../utils/errorHandler";
 import { User } from "../types";
 import { db } from "../db";
+import jwt from "jsonwebtoken";
+
+const signToken = (payload: {}, secret: string) => {
+    return jwt.sign(payload, secret);
+};
 
 export const signIn = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -24,9 +29,18 @@ export const signIn = catchAsync(
         );
 
         if (comparedPassword) {
+            const token = signToken(
+                { email: existingUser.email, role: existingUser.role },
+                "secret"
+            );
             return res.status(200).json({
                 status: "success",
-                data: existingUser,
+                data: {
+                    name: existingUser.name,
+                    email: existingUser.email,
+                    image: existingUser.image,
+                },
+                token,
             });
         } else {
             return next(createHttpError(404, "Invalid Credentials"));
