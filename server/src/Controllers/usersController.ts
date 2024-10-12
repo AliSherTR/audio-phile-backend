@@ -39,8 +39,9 @@ export const signIn = catchAsync(
                     name: existingUser.name,
                     email: existingUser.email,
                     image: existingUser.image,
+                    role: existingUser.role,
+                    token,
                 },
-                token,
             });
         } else {
             return next(createHttpError(404, "Invalid Credentials"));

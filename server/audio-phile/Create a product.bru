@@ -5,14 +5,18 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/
+  url: http://localhost:8000/
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGVAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyODYyNjUxNH0.k7ZQMm4Rwog-IFb0q3fHvEdItH9Tz4UaKWBXuXqDE9g
 }
 
 body:json {
   {
-    "name": "XX99 Mark II Headphones",
+    "name": "XX99 Mark II",
     "price": 2999,
     "description": "The new XX99 Mark II headphones is the pinnacle of pristine audio. It redefines your premium headphone experience by reproducing the balanced depth and precision of studio-quality sound.",
     "accessories": ["Headphone unit" , "Replacement earcups", "User manual" , "3.5mm 5m audio cable" , "Travel bag"],

@@ -5,7 +5,16 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: http://localhost:3000/signup
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "name" : "Ali Sher Khan",
+    "email" : "example@gmail.com",
+    "password": "Khan12345",
+    "image": "example-image"
+  }
 }
