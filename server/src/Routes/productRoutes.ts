@@ -11,7 +11,6 @@ import {
 import { validateData } from "../Middleware/validationMiddleware";
 import { ProductSchema } from "../Models/ProductModel";
 import { verifyAdminToken } from "../Middleware/verifyAdmin";
-const productController from "../../../index"
 
 const router = Router();
 

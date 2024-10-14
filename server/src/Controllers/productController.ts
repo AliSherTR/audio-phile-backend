@@ -6,13 +6,28 @@ import { catchAsync } from "../utils/errorHandler";
 
 export const getAllProducts = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const products = await db.product.findMany();
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const skip = (page - 1) * limit;
+        const products = await db.product.findMany({
+            skip,
+            take: limit,
+        });
         if (!products.length)
             return next(createHttpError(404, "No Products Found"));
+
+        const totalItems = await db.product.count();
+        const totalPages = Math.ceil(totalItems / limit);
 
         res.status(200).json({
             status: "success",
             data: products,
+            meta: {
+                totalItems,
+                totalPages,
+                currentPage: page,
+                pageSize: limit,
+            },
         });
     }
 );

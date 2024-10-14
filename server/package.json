@@ -8,6 +8,9 @@
         "dev": "nodemon src/index.ts",
         "build": "tsc"
     },
+    "prisma": {
+        "seed": "ts-node prisma/seed.ts"
+    },
     "author": "Ali Sher Khan",
     "license": "ISC",
     "devDependencies": {
