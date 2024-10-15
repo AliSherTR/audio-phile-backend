@@ -9,14 +9,30 @@ export const getAllProducts = catchAsync(
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
         const skip = (page - 1) * limit;
-        const products = await db.product.findMany({
-            skip,
-            take: limit,
-        });
-        if (!products.length)
-            return next(createHttpError(404, "No Products Found"));
 
-        const totalItems = await db.product.count();
+        const search = req.query.search as string | undefined;
+
+        let whereClause = {};
+        if (search) {
+            whereClause = {
+                OR: [{ name: { contains: search, mode: "insensitive" } }],
+            };
+        }
+
+        const [products, totalItems] = await Promise.all([
+            db.product.findMany({
+                where: whereClause,
+                skip,
+                take: limit,
+                orderBy: { id: "asc" },
+            }),
+            db.product.count({ where: whereClause }),
+        ]);
+
+        if (!products.length) {
+            return next(createHttpError(404, "No Products Found"));
+        }
+
         const totalPages = Math.ceil(totalItems / limit);
 
         res.status(200).json({
