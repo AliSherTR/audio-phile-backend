@@ -1,0 +1,21 @@
+meta {
+  name: Get all users
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8000/all-users?page=1&limit=10&search=example@gmail.com
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 1
+  limit: 10
+  search: example@gmail.com
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGVAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzI5MDU5Njk3fQ.AIHIiEjndlI_S01_rvNwrAvRshejXD7SRLl00s247-g
+}

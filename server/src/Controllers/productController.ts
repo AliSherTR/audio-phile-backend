@@ -3,6 +3,9 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import createHttpError from "http-errors";
 import { db } from "../db";
 import { catchAsync } from "../utils/errorHandler";
+import { QueryBuilder } from "../utils/queryBuilder";
+
+const queryBuilder = new QueryBuilder();
 
 export const getAllProducts = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -12,18 +15,16 @@ export const getAllProducts = catchAsync(
 
         const search = req.query.search as string | undefined;
 
-        let whereClause = {};
+        let whereClause = queryBuilder.getWhereClause();
+        const pagination = queryBuilder.addPagination(skip, limit);
         if (search) {
-            whereClause = {
-                OR: [{ name: { contains: search, mode: "insensitive" } }],
-            };
+            queryBuilder.addSearch(search, ["name"]);
         }
 
         const [products, totalItems] = await Promise.all([
             db.product.findMany({
                 where: whereClause,
-                skip,
-                take: limit,
+                ...pagination,
                 orderBy: { id: "asc" },
             }),
             db.product.count({ where: whereClause }),
