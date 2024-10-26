@@ -5,15 +5,9 @@ meta {
 }
 
 get {
-  url: http://localhost:8000/all-users?page=1&limit=10&search=example@gmail.com
+  url: http://localhost:8000/all-users
   body: none
   auth: bearer
-}
-
-params:query {
-  page: 1
-  limit: 10
-  search: example@gmail.com
 }
 
 auth:bearer {

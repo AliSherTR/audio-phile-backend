@@ -94,7 +94,7 @@ export const getSingleProduct = catchAsync(
 
         res.status(201).json({
             status: "success",
-            id: product,
+            data: product,
         });
     }
 );

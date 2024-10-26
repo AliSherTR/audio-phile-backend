@@ -5,11 +5,15 @@ meta {
 }
 
 delete {
-  url: http://localhost:8000/users/:id
+  url: http://localhost:8000/user/:id
   body: none
-  auth: none
+  auth: bearer
 }
 
 params:path {
-  id: 
+  id: 1
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGVAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzI5MDU5Njk3fQ.AIHIiEjndlI_S01_rvNwrAvRshejXD7SRLl00s247-g
 }
