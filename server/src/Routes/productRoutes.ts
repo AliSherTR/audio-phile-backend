@@ -11,6 +11,7 @@ import {
 import { validateData } from "../Middleware/validationMiddleware";
 import { ProductSchema } from "../Models/ProductModel";
 import { verifyAdminToken } from "../Middleware/verifyAdmin";
+import { processUpload, uploadImage } from "../Middleware/uploadMiddleware";
 
 const router = Router();
 
@@ -19,7 +20,13 @@ router.get("/promoted", getPromotedProduct);
 router
     .route("/")
     .get(getAllProducts)
-    .post(verifyAdminToken, validateData(ProductSchema), createProduct);
+    .post(
+        verifyAdminToken,
+        uploadImage,
+        processUpload,
+        validateData(ProductSchema),
+        createProduct
+    );
 
 router
     .route("/:id")

@@ -52,6 +52,7 @@ export const getAllProducts = catchAsync(
 export const createProduct = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const productData = req.body;
+
         try {
             const newProduct = await db.product.create({
                 data: productData,
@@ -68,14 +69,13 @@ export const createProduct = catchAsync(
                 error.code === "P2002" // This is Prisma's code for "Record already exists"
             ) {
                 return next(
-                    createHttpError(404, "This product already exists")
+                    createHttpError(409, "This product already exists")
                 );
             }
             next(error);
         }
     }
 );
-
 export const getSingleProduct = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;

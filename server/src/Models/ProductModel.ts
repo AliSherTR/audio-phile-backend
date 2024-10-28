@@ -1,21 +1,20 @@
 import * as z from "zod";
 
 export const ProductSchema = z.object({
-    name: z.string().min(1, {
-        message: "Name is required",
-    }),
-    price: z.number().min(1, {
-        message: "Price is required",
-    }),
-    description: z.string().min(1, {
-        message: "description is required",
-    }),
-    accessories: z.array(z.string()),
-    category: z.enum(["HEADPHONES", "EARPHONES", "SPEAKERS"]),
-    image: z.string(),
-    features: z.string().min(1, {
-        message: "features are required",
-    }),
-    isFeatured: z.boolean(),
-    isPromoted: z.boolean().default(false),
+    name: z.string().min(1, { message: "Name is required" }),
+    price: z
+        .string()
+        .min(1, { message: "Price is required" })
+        .transform(Number),
+    description: z.string().min(1, { message: "Description is required" }),
+    features: z.string().min(1, { message: "Features are required" }),
+    category: z
+        .enum(["Headphones", "Earphones", "Speakers"])
+        .transform((val) => val.toUpperCase()),
+
+    isPromoted: z.boolean().optional().default(false),
+    isFeatured: z.boolean().optional().default(false),
+    accessories: z.array(z.string()).optional(),
+    image: z.any().optional(),
+    stock: z.string().transform(Number),
 });

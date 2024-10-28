@@ -12,6 +12,7 @@ export const globalErrorHandler = (
     res: Response,
     next: NextFunction
 ) => {
+    console.log(err);
     res.status(err.statusCode || 500).json({
         status: err.status || "error",
         message: err.message || "An unknown error occurred",
