@@ -9,14 +9,6 @@ export const processUpload = (
     next: NextFunction
 ) => {
     try {
-        // Convert string 'true'/'false' to boolean for checkbox values
-        if (req.body.isPromoted) {
-            req.body.isPromoted = req.body.isPromoted === "true";
-        }
-        if (req.body.isFeatured) {
-            req.body.isFeatured = req.body.isFeatured === "true";
-        }
-
         // Add image path if a file was uploaded
         if (req.file) {
             req.body.image = req.file.path;

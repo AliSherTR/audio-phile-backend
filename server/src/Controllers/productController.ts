@@ -31,6 +31,7 @@ export const getAllProducts = catchAsync(
         ]);
 
         if (!products.length) {
+            // the response code 204 means no data found
             return next(createHttpError(404, "No Products Found"));
         }
 
