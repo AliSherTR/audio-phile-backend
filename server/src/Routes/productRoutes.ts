@@ -32,6 +32,12 @@ router
     .route("/:id")
     .get(getSingleProduct)
     .delete(verifyAdminToken, deleteProduct)
-    .patch(validateData(ProductSchema), verifyAdminToken, updateProduct);
+    .patch(
+        validateData(ProductSchema),
+        uploadImage,
+        processUpload,
+        verifyAdminToken,
+        updateProduct
+    );
 
 export default router;

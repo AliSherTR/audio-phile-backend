@@ -138,37 +138,27 @@ export const updateProduct = catchAsync(
 
         const productId = parseInt(id);
 
-        try {
-            const updatedProduct = await db.product.update({
-                where: {
-                    id: productId,
-                },
-                data: {
-                    name: req.body.name,
-                    price: req.body.price,
-                    description: req.body.description,
-                    accessories: req.body.accessories,
-                    features: req.body.features,
-                    image: req.body.image,
-                    isFeatured: req.body.isFeatured,
-                    category: req.body.category.toUpperCase(),
-                    isPromoted: req.body.isPromoted,
-                },
-            });
-            res.status(200).json({
-                status: "success",
-                message: "Product deleted successfully",
-                data: updatedProduct,
-            });
-        } catch (error) {
-            if (
-                error instanceof PrismaClientKnownRequestError &&
-                error.code === "P2025" // This is Prisma's code for "Record not found"
-            ) {
-                return next(createHttpError(404, "No Product Found"));
-            }
-            next(error);
+        const productData = req.body;
+
+        const [existingProduct, updatedProduct] = await db.$transaction([
+            db.product.findUnique({
+                where: { id: productId },
+            }),
+            db.product.update({
+                where: { id: productId },
+                data: productData,
+            }),
+        ]);
+
+        if (!existingProduct) {
+            return next(createHttpError(404, "No Product Found"));
         }
+
+        res.status(200).json({
+            status: "success",
+            message: "Product updated successfully",
+            data: updatedProduct,
+        });
     }
 );
 

@@ -7,7 +7,7 @@ export function validateData(schema: z.ZodObject<any, any>) {
             const formData: Record<string, any> = {};
             for (const [key, value] of Object.entries(req.body)) {
                 if (key === "accessories") {
-                    formData[key] = JSON.parse(value as string);
+                    // formData[key] = JSON.parse(value as string);
                 } else if (key === "isPromoted" || key === "isFeatured") {
                     formData[key] = value === "true";
                 } else {
