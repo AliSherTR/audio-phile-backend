@@ -33,10 +33,10 @@ router
     .get(getSingleProduct)
     .delete(verifyAdminToken, deleteProduct)
     .patch(
-        validateData(ProductSchema),
+        verifyAdminToken,
         uploadImage,
         processUpload,
-        verifyAdminToken,
+        validateData(ProductSchema),
         updateProduct
     );
 

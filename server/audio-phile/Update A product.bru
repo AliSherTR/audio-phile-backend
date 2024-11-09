@@ -5,25 +5,42 @@ meta {
 }
 
 patch {
-  url: http://localhost:3000/:id
-  body: json
-  auth: none
+  url: http://localhost:8000/:id
+  body: multipartForm
+  auth: bearer
 }
 
 params:path {
-  id: 1
+  id: 2
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGVAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMwOTAxOTcxfQ.6_ZNW1DvhR09PF0r4S4B26WzosLMu2q16-GERcOra18
 }
 
 body:json {
   {
     "name": "Mobile Phone",
-    "price": 39999,
+    "price": "39999",
     "description": "test",
-    "accessories": ["test1" , "test2"],
+    "accessories": ["test1", "test2"],
     "features": "Test",
-    "category": "EARPHONES",
+    "category": "Headphones",
     "image": "testis",
     "isFeatured": false,
-    "isPromoted": true
+    "isPromoted": true,
+    "stock": "50"
+    
   }
+}
+
+body:multipart-form {
+  image: @file(D:\Test Data\products\airox-cb14-charging-cable-pakistan-priceoye-id1ik-500x500.webp)
+  name: Test Name
+  price: 400
+  features: asdfasdfasd asdf asdfasdfasd fa
+  description: asdfasdfasd asdf asdfasdfasd fa
+  accessories: "cable", "test"
+  category: HEADPHONES
+  stock: 20
 }
