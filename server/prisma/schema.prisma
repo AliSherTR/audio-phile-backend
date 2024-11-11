@@ -46,4 +46,16 @@ model Product {
   features        String
   stock           Int
   isPromoted      Boolean @default(false)
+  events          Event[] // one to many relation with the events 
+  
+}
+
+model Event {
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  startDate       DateTime
+  endDate         DateTime
+  product         Product? @relation(fields: [productId], references: [id])
+  productId       Int?
+  discount        Float?
 }

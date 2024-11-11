@@ -3,6 +3,7 @@ import express from "express";
 import productRouter from "./Routes/productRoutes";
 import authRouter from "./Routes/authRoutes";
 import userRouter from "./Routes/userRoutes";
+import eventsRouter from "./Routes/eventRoutes";
 import { globalErrorHandler } from "./Middleware/globalErrorHandler";
 const app = express();
 
@@ -14,6 +15,7 @@ app.use("/uploads", express.static("uploads"));
 app.use(userRouter);
 app.use(productRouter);
 app.use(authRouter);
+app.use(eventsRouter);
 
 app.use(globalErrorHandler);
 app.listen(port, () => {
