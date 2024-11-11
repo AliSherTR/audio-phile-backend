@@ -6,6 +6,16 @@ meta {
 
 post {
   url: http://localhost:8000/event
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "name": "Summer Sale",
+    "startDate": "2024-06-01T00:00:00Z",
+    "endDate": "2024-06-15T23:59:59Z",
+    "productId": 4,
+    "discount": 20
+  }
 }

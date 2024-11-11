@@ -38,6 +38,7 @@ model Product {
   id              Int @id @default(autoincrement())
   name            String @unique
   price           Float
+  discountedPrice Float? @default(0)
   description     String
   accessories     String[]
   category        Category
