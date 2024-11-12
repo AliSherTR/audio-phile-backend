@@ -12,10 +12,10 @@ const port: number = 8000;
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
-app.use(userRouter);
-app.use(productRouter);
-app.use(authRouter);
-app.use(eventsRouter);
+app.use("/users", userRouter);
+app.use("/products", productRouter);
+app.use("/auth", authRouter);
+app.use("/events", eventsRouter);
 
 app.use(globalErrorHandler);
 app.listen(port, () => {

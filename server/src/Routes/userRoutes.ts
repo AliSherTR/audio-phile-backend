@@ -6,6 +6,6 @@ const router = Router();
 
 router.get("/all-users", verifyAdminToken, getAllUsers);
 
-router.route("/user/:id").delete(verifyAdminToken, deleteUser);
+router.route("/:id").delete(verifyAdminToken, deleteUser);
 
 export default router;
