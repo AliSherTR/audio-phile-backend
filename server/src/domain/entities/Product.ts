@@ -1,3 +1,4 @@
+export type ProductCategory = "HEADPHONES" | "EARPHONES" | "SPEAKERS";
 export class Product {
     constructor(
         public readonly id: number,
@@ -5,7 +6,7 @@ export class Product {
         public price: number,
         public description: string,
         public features: string,
-        public category: "HEADPHONES" | "EARPHONES" | "SPEAKERS",
+        public category: ProductCategory,
         public isPromoted: boolean = false,
         public isFeatured: boolean = false,
         public accessories: string[] = [],

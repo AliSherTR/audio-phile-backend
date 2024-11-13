@@ -8,9 +8,7 @@ export const ProductSchema = z.object({
         .transform(Number),
     description: z.string().min(1, { message: "Description is required" }),
     features: z.string().min(1, { message: "Features are required" }),
-    category: z
-        .enum(["Headphones", "Earphones", "Speakers"])
-        .transform((val) => val.toUpperCase()),
+    category: z.enum(["HEADPHONES", "EARPHONES", "SPEAKERS"] as const),
 
     isPromoted: z.boolean().optional().default(false),
     isFeatured: z.boolean().optional().default(false),
