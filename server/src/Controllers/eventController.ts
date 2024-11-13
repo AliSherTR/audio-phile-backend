@@ -37,6 +37,7 @@ cron.schedule(
     }
 );
 
+// this is the controller to get all the events on the admin side
 export const getAllEvents = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const events = await db.event.findMany();
@@ -51,6 +52,7 @@ export const getAllEvents = catchAsync(
     }
 );
 
+// this is the controller to get only the active events on the client side
 export const getAllActiveEvents = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const { activeEvents } = req.body;
@@ -67,7 +69,8 @@ export const getAllActiveEvents = catchAsync(
 
 export const createEvent = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { name, startDate, endDate, productId, discount } = req.body;
+        const { name, startDate, endDate, productId, discount, image } =
+            req.body;
 
         const data = await db.$transaction(async (prisma) => {
             // Check if product exists
@@ -92,6 +95,7 @@ export const createEvent = catchAsync(
                     name,
                     startDate: new Date(startDate),
                     endDate: new Date(endDate),
+                    image,
                     product: { connect: { id: productId } },
                     discount,
                 },
@@ -120,9 +124,3 @@ export const createEvent = catchAsync(
         });
     }
 );
-
-// now just create a scheduler and set the discounted price back to zero when the time of the event is finished
-
-// cron.schedule("* * * * * * * *", () => {
-//     console.log("running every minute 1, 2, 4 and 5");
-// });
