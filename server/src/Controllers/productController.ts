@@ -54,6 +54,8 @@ export const createProduct = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const productData = req.body;
 
+        console.log(req.body);
+
         try {
             const newProduct = await db.product.create({
                 data: productData,
