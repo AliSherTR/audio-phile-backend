@@ -69,8 +69,13 @@ export const getAllActiveEvents = catchAsync(
 
 export const createEvent = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { name, startDate, endDate, productId, discount, image } =
+        const { name, startDate, endDate, image } =
             req.body;
+
+        const productId = parseInt(req.body.productId)
+        const discount = parseInt(req.body.discount)
+
+        console.log(req.body)
 
         const data = await db.$transaction(async (prisma) => {
             // Check if product exists
