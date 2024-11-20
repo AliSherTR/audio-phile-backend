@@ -5,9 +5,13 @@ meta {
 }
 
 post {
-  url: http://localhost:8000/events/event
-  body: json
-  auth: none
+  url: http://localhost:8000/events
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImV4YW1wbGVAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzMxNDAwMjAwfQ.o7hYjIg97D2To3-J8J4Cwh32BwuKOBOpZfHyzX1Ih2g
 }
 
 body:json {
@@ -15,7 +19,16 @@ body:json {
     "name": "Summer Sale",
     "startDate": "2024-11-11T00:00:00Z",
     "endDate": "2024-11-12T10:45:00Z",
-    "productId": 4,
+    "productId": 1,
     "discount": 20
   }
+}
+
+body:multipart-form {
+  image: @file(D:\Test Data\products\airox-cb14-charging-cable-pakistan-priceoye-id1ik-500x500.webp)
+  name: Summer Gala
+  startDate: 2024-11-05T00:00:00Z
+  endDate: 2024-11-10T10:45:00Z
+  productId: 1
+  discount: 20
 }

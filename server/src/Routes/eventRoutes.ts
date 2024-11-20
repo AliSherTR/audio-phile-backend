@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     createEvent,
+    deleteEvent,
     getAllActiveEvents,
     getAllEvents,
 } from "../Controllers/eventController";
@@ -12,17 +13,17 @@ import { verifyAdminToken } from "../Middleware/verifyAdmin";
 
 const router = Router();
 
-router
-    .route("/")
-    .post(
-        uploadImage,
-        processUpload,
-        verifyAdminToken,
-        // validateData(eventSchema),
-        createEvent
-    );
+router.route("/").post(
+    uploadImage,
+    processUpload,
+    verifyAdminToken,
+    // validateData(eventSchema),
+    createEvent
+);
 
-    router.route("/all-admin").get(getAllEvents)
+router.route("/:id").delete(verifyAdminToken, deleteEvent);
+
+router.route("/all-admin").get(getAllEvents);
 
 router.route("/all").get(filterActiveEvents, getAllActiveEvents);
 

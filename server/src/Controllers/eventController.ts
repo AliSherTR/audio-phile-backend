@@ -69,13 +69,11 @@ export const getAllActiveEvents = catchAsync(
 
 export const createEvent = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { name, startDate, endDate, image } =
-            req.body;
+        console.log("request reached here");
+        const { name, startDate, endDate, image } = req.body;
 
-        const productId = parseInt(req.body.productId)
-        const discount = parseInt(req.body.discount)
-
-        console.log(req.body)
+        const productId = parseInt(req.body.productId);
+        const discount = parseInt(req.body.discount);
 
         const data = await db.$transaction(async (prisma) => {
             // Check if product exists
@@ -127,5 +125,27 @@ export const createEvent = catchAsync(
             status: "success",
             data,
         });
+    }
+);
+
+export const deleteEvent = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        const eventId = parseInt(id);
+
+        const existingEvent = await db.event.findUnique({
+            where: {
+                id: eventId,
+            },
+        });
+
+        if (!existingEvent) {
+            return next(createHttpError(404, "The event does not exist"));
+        }
+
+        await db.event.delete({
+            where: { id: existingEvent.id },
+        });
+        res.json({ status: "success", message: "Event Deleted Successfully" });
     }
 );
