@@ -4,7 +4,8 @@ import createHttpError from "http-errors";
 import { db } from "../db";
 import { catchAsync } from "../utils/errorHandler";
 import { QueryBuilder } from "../utils/queryBuilder";
-
+import path from "path";
+import * as fs from "fs";
 const queryBuilder = new QueryBuilder();
 
 export const getAllProducts = catchAsync(
@@ -110,25 +111,39 @@ export const deleteProduct = catchAsync(
 
         const productId = parseInt(id);
 
-        try {
-            await db.product.delete({
-                where: {
-                    id: productId,
-                },
-            });
-            res.status(200).json({
-                status: "success",
-                message: "Product deleted successfully",
-            });
-        } catch (error) {
-            if (
-                error instanceof PrismaClientKnownRequestError &&
-                error.code === "P2025" // This is Prisma's code for "Record not found"
-            ) {
-                return next(createHttpError(404, "No Product Found"));
-            }
-            next(error);
+        const product = await db.product.findUnique({
+            where: {
+                id: productId,
+            },
+        });
+
+        if (!product) {
+            return next(createHttpError(404, "No Product Found"));
         }
+
+        // Get the image path associated with the product
+        const imagePath = path.join(product.image);
+
+        // Delete the image file from the uploads folder
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error("Error deleting image:", err);
+                return res
+                    .status(500)
+                    .json({ message: "Failed to delete image" });
+            }
+            console.log("Image successfully deleted");
+        });
+
+        await db.product.delete({
+            where: {
+                id: product.id,
+            },
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Product deleted successfully",
+        });
     }
 );
 
