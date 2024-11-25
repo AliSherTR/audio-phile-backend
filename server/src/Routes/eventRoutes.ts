@@ -4,6 +4,7 @@ import {
     deleteEvent,
     getAllActiveEvents,
     getAllEvents,
+    getSingleEvent,
 } from "../Controllers/eventController";
 import { validateData } from "../Middleware/validationMiddleware";
 import { eventSchema } from "../Models/eventModel";
@@ -22,6 +23,8 @@ router.route("/").post(
 );
 
 router.route("/:id").delete(verifyAdminToken, deleteEvent);
+
+router.route("/:eventId/:productId").get(getSingleEvent)
 
 router.route("/all-admin").get(getAllEvents);
 
