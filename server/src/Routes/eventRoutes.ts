@@ -5,6 +5,7 @@ import {
     getAllActiveEvents,
     getAllEvents,
     getSingleEvent,
+    updateEvent,
 } from "../Controllers/eventController";
 import { validateData } from "../Middleware/validationMiddleware";
 import { eventSchema } from "../Models/eventModel";
@@ -14,6 +15,11 @@ import { verifyAdminToken } from "../Middleware/verifyAdmin";
 
 const router = Router();
 
+router
+    .route("/:id")
+    .delete(verifyAdminToken, deleteEvent)
+    .patch(verifyAdminToken, updateEvent);
+
 router.route("/").post(
     uploadImage,
     processUpload,
@@ -22,9 +28,7 @@ router.route("/").post(
     createEvent
 );
 
-router.route("/:id").delete(verifyAdminToken, deleteEvent);
-
-router.route("/:eventId/:productId").get(getSingleEvent)
+router.route("/:eventId/:productId").get(getSingleEvent);
 
 router.route("/all-admin").get(getAllEvents);
 

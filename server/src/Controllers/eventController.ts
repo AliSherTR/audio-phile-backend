@@ -52,50 +52,48 @@ export const getAllEvents = catchAsync(
     }
 );
 
+export const getSingleEvent = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { eventId, productId } = req.params;
 
-export const getSingleEvent = catchAsync(async (req: Request , res: Response , next: NextFunction) => {
-    const { eventId , productId } = req.params;
+        const event = await db.event.findUnique({
+            where: {
+                id: parseInt(eventId),
+            },
+            select: {
+                name: true,
+                image: true,
+                discount: true,
+                endDate: true,
+            },
+        });
 
-    const event = await db.event.findUnique({
-        where: {
-            id: parseInt(eventId)
-        },
-        select: {
-            name: true,
-            image: true,
-            discount: true,
-            endDate: true,
+        const product = await db.product.findUnique({
+            where: {
+                id: parseInt(productId),
+            },
+            select: {
+                id: true,
+                name: true,
+                discountedPrice: true,
+                category: true,
+                image: true,
+            },
+        });
+
+        if (!event || !product) {
+            return next(createHttpError(404, "No data found for the event"));
         }
-    })
 
-    const product = await db.product.findUnique({
-        where: {
-            id: parseInt(productId)
-        },
-        select: {
-            id: true,
-            name: true,
-            discountedPrice: true,
-            category: true,
-            image: true
-        }
-    })
-
- 
-
-    if(!event || !product) {
-        return next(createHttpError(404, "No data found for the event"))
+        res.status(200).json({
+            status: "success",
+            data: {
+                event,
+                product,
+            },
+        });
     }
-
-    res.status(200).json({
-        status: "success",
-        data: {
-            event ,
-            product
-        }
-    })
-
-})
+);
 
 // this is the controller to get only the active events on the client side
 export const getAllActiveEvents = catchAsync(
@@ -192,5 +190,32 @@ export const deleteEvent = catchAsync(
             where: { id: existingEvent.id },
         });
         res.json({ status: "success", message: "Event Deleted Successfully" });
+    }
+);
+
+export const updateEvent = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        const eventData = req.body;
+
+        const [existingEvent, updatedEvent] = await db.$transaction([
+            db.event.findUnique({
+                where: { id: parseInt(id) },
+            }),
+            db.event.update({
+                where: { id: parseInt(id) },
+                data: eventData,
+            }),
+        ]);
+
+        if (!existingEvent) {
+            return next(createHttpError(404, "No Event Found"));
+        }
+
+        res.status(200).json({
+            status: "success",
+            message: "Event updated successfully",
+            data: updatedEvent,
+        });
     }
 );
