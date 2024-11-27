@@ -195,8 +195,11 @@ export const deleteEvent = catchAsync(
 
 export const updateEvent = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
+        console.log("UPDATE EVENT RUNNING")
         const { id } = req.params;
-        const eventData = req.body;
+        const { name, startDate, endDate, image } = req.body;
+
+        console.log(req.body)
 
         const [existingEvent, updatedEvent] = await db.$transaction([
             db.event.findUnique({
@@ -204,7 +207,12 @@ export const updateEvent = catchAsync(
             }),
             db.event.update({
                 where: { id: parseInt(id) },
-                data: eventData,
+                data: {
+                    name,
+                    startDate: new Date(startDate),
+                    endDate = new Date(endDate),
+                    
+                },
             }),
         ]);
 

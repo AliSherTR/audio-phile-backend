@@ -18,7 +18,7 @@ const router = Router();
 router
     .route("/:id")
     .delete(verifyAdminToken, deleteEvent)
-    .patch(verifyAdminToken, updateEvent);
+    .patch(verifyAdminToken, uploadImage, processUpload , updateEvent);
 
 router.route("/").post(
     uploadImage,
