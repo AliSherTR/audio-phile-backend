@@ -118,7 +118,7 @@ export const createEvent = catchAsync(
         const productId = parseInt(req.body.productId);
         const discount = parseInt(req.body.discount);
 
-        const data = await db.$transaction(async (prisma) => {
+        const data = await db.$transaction(async (prisma: any) => {
             // Check if product exists
             const existingProduct = await prisma.product.findUnique({
                 where: { id: productId },
@@ -196,6 +196,7 @@ export const deleteEvent = catchAsync(
 export const updateEvent = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         console.log("UPDATE EVENT RUNNING")
+        console.log("I am just checking the repo on ubuntu")
         const { id } = req.params;
         const { name, startDate, endDate, image } = req.body;
 
@@ -210,8 +211,7 @@ export const updateEvent = catchAsync(
                 data: {
                     name,
                     startDate: new Date(startDate),
-                    endDate = new Date(endDate),
-                    
+                    endDate : new Date(endDate),                
                 },
             }),
         ]);
