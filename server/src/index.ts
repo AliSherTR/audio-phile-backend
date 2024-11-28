@@ -10,6 +10,8 @@ const app = express();
 
 const port: number = 8000;
 
+// add othe middlewares here like logging and so on
+
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
