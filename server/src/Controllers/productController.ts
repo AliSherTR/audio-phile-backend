@@ -6,6 +6,7 @@ import { catchAsync } from "../utils/errorHandler";
 import { QueryBuilder } from "../utils/queryBuilder";
 import path from "path";
 import * as fs from "fs";
+import { generateImageUrl } from "../config/multer";
 const queryBuilder = new QueryBuilder();
 
 export const getAllProducts = catchAsync(
@@ -53,10 +54,10 @@ export const getAllProducts = catchAsync(
 
 export const createProduct = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const productData = req.body;
+        let productData = req.body;
+        const databaseImageUrl = generateImageUrl(req.body.image);
 
-        console.log(req.body);
-
+        productData = {...productData , image: databaseImageUrl}
         try {
             const newProduct = await db.product.create({
                 data: productData,
@@ -76,7 +77,6 @@ export const createProduct = catchAsync(
                     createHttpError(409, "This product already exists")
                 );
             }
-            next(error);
         }
     }
 );
@@ -121,8 +121,12 @@ export const deleteProduct = catchAsync(
             return next(createHttpError(404, "No Product Found"));
         }
 
+        const storedImage = product.image.split('/uploads/')[1];
+        console.log(storedImage)
         // Get the image path associated with the product
-        const imagePath = path.join(product.image);
+        const imagePath = path.join(__dirname, '..', '..', 'uploads', storedImage);
+
+        console.log(imagePath)
 
         // Delete the image file from the uploads folder
         fs.unlink(imagePath, (err) => {

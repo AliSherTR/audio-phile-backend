@@ -4,7 +4,7 @@ import fs from "fs";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = path.join(__dirname, "..", "..", "uploads");
+        const uploadDir = path.join("uploads");
         fs.mkdirSync(uploadDir, { recursive: true });
         cb(null, uploadDir);
     },
@@ -21,3 +21,7 @@ const storage = multer.diskStorage({
 });
 
 export const upload = multer({ storage: storage });
+
+export const generateImageUrl = (fileName: string): string => {
+    return `http://localhost:8000/${fileName}`;
+};
